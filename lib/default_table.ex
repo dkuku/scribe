@@ -1,38 +1,37 @@
 defmodule Scribe.DefaultTable do
   @moduledoc """
 
-     1234
-    a╔═╦╗
-    b║ ║║
-    c╠═╬╣
-    d║ ║║
-    e╚═╩╝
-  
-    use Scribe.DefaultTable,
-      a1: "╔",
-      a2: "═",
-      a3: "╦",
-      a4: "╗",
-      b1: "║",
-      b2: " ",
-      b3: "║",
-      b4: "║",
-      c1: "╠",
-      c2: "═",
-      c3: "╬",
-      c4: "╣",
-      d1: "║",
-      d2: " ",
-      d3: "║",
-      d4: "║",
-      e1: "╚",
-      e2: "═",
-      e3: "╩",
-      e4: "╝"
-    """
+   1234
+  a╔═╦╗
+  b║ ║║
+  c╠═╬╣
+  d║ ║║
+  e╚═╩╝
+
+  use Scribe.DefaultTable,
+    a1: "╔",
+    a2: "═",
+    a3: "╦",
+    a4: "╗",
+    b1: "║",
+    b2: " ",
+    b3: "║",
+    b4: "║",
+    c1: "╠",
+    c2: "═",
+    c3: "╬",
+    c4: "╣",
+    d1: "║",
+    d2: " ",
+    d3: "║",
+    d4: "║",
+    e1: "╚",
+    e2: "═",
+    e3: "╩",
+    e4: "╝"
+  """
 
   defmacro __using__(edges) do
-
     quote do
       @header_border %Scribe.Border{
         bottom_edge: unquote(edges[:e2]),

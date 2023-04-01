@@ -34,6 +34,7 @@ defmodule Scribe.Style.Full do
       right_edge: "|"
     }
   end
+
   def border_at(_, _, _, _) do
     %Scribe.Border{
       bottom_edge: "-",

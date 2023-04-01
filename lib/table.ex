@@ -36,7 +36,7 @@ defmodule Scribe.Table do
       col_max: data |> Enum.at(0) |> Enum.count()
     }
 
-    Enum.reduce(0..(index.row_max - 1), "", fn x, acc ->
+    Enum.reduce((index.row_max - 1)..0, [], fn x, acc ->
       row = Enum.at(data, x)
       i = %{index | row: x}
 
@@ -48,8 +48,9 @@ defmodule Scribe.Table do
         opts: opts
       }
 
-      acc <> Line.format(line)
+      [Line.format(line) | acc]
     end)
+    |> IO.iodata_to_binary()
   end
 
   defp get_max_widths(data, rows, cols) do

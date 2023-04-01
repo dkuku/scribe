@@ -10,11 +10,11 @@ defmodule Scribe.Formatter.Line do
   alias Scribe.Formatter.{Index, Line}
 
   def format(%Line{index: %Index{row: 0}} = line) do
-    top(line) <> data(line) <> bottom(line)
+    [top(line), data(line), bottom(line)]
   end
 
   def format(%Line{} = line) do
-    data(line) <> bottom(line)
+    [data(line), bottom(line)]
   end
 
   def data(%Line{} = line) do
@@ -30,7 +30,7 @@ defmodule Scribe.Formatter.Line do
     left_edge = border.left_edge
 
     line =
-      Enum.reduce(0..(index.col_max - 1), "", fn x, acc ->
+      Enum.reduce((index.col_max - 1)..0, [], fn x, acc ->
         b = style.border_at(index.row, x, index.row_max, index.col_max)
         width = Enum.at(widths, x)
         value = Enum.at(row, x)
@@ -41,28 +41,29 @@ defmodule Scribe.Formatter.Line do
             _ -> value |> cell(width) |> colorize(style.color(value))
           end
 
-        acc <> cell_value <> b.right_edge
+        [cell_value, b.right_edge | acc]
       end)
 
-    left_edge <> line <> "\n"
+    [left_edge, line, "\n"]
   end
 
   def cell(x, width) do
-    len = min(String.length(" #{inspect(x)} "), width)
-    padding = String.duplicate(" ", width - len)
-    truncate(" #{inspect(x)}#{padding}", width - 2) <> " "
+    len = min(String.length(inspect(x)) + 2, width)
+    [truncate([" ", inspect(x), padding(width - len)], width - 2), " "]
   end
 
   def cell_value(x, padding, max_width) when padding >= 0 do
-    truncate(" #{inspect(x)}#{String.duplicate(" ", padding)} ", max_width)
+    truncate([" ", inspect(x), padding(padding)], max_width)
   end
 
   defp truncate(elem, width) do
-    String.slice(elem, 0..width)
+    elem
+    |> IO.iodata_to_binary()
+    |> String.slice(0..width)
   end
 
   def colorize(string, color) do
-    "#{color}#{string}#{IO.ANSI.reset()}"
+    [color, string, IO.ANSI.reset()]
   end
 
   def top(%Line{widths: widths, style: style, index: index, opts: opts}) do
@@ -70,11 +71,11 @@ defmodule Scribe.Formatter.Line do
     top_left = border.top_left_corner
 
     line =
-      Enum.reduce(0..(index.col_max - 1), "", fn x, acc ->
+      Enum.reduce((index.col_max - 1)..0, [], fn x, acc ->
         b = style.border_at(index.row, x, index.row_max, index.col_max)
         width = Enum.at(widths, x)
 
-        acc <> String.duplicate(b.top_edge, width) <> b.top_right_corner
+        [String.duplicate(b.top_edge, width), b.top_right_corner | acc]
       end)
 
     color_prefix =
@@ -84,7 +85,7 @@ defmodule Scribe.Formatter.Line do
         ""
       end
 
-    color_prefix <> top_left <> add_newline(line)
+    [color_prefix, top_left, add_newline(line)]
   end
 
   def bottom(%Line{widths: widths, style: style, index: index}) do
@@ -92,16 +93,25 @@ defmodule Scribe.Formatter.Line do
     bottom_left = border.bottom_left_corner
 
     line =
-      Enum.reduce(0..(index.col_max - 1), "", fn x, acc ->
+      Enum.reduce((index.col_max - 1)..0, [], fn x, acc ->
         b = style.border_at(index.row, x, index.row_max, index.col_max)
         width = Enum.at(widths, x)
 
-        acc <> String.duplicate(b.bottom_edge, width) <> b.bottom_right_corner
+        [String.duplicate(b.bottom_edge, width), b.bottom_right_corner | acc]
       end)
 
-    bottom_left <> add_newline(line)
+    [bottom_left, add_newline(line)]
   end
 
-  def add_newline(""), do: ""
-  def add_newline(line), do: line <> "\n"
+  def add_newline(line) do
+    if Enum.all?(line, &(&1 == "")) do
+      []
+    else
+      [line, "\n"]
+    end
+  end
+
+  defp padding(amount) do
+    Enum.map(0..amount, fn _x -> " " end)
+  end
 end
