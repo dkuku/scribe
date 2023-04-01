@@ -75,7 +75,7 @@ defmodule Scribe.Formatter.Line do
         b = style.border_at(index.row, x, index.row_max, index.col_max)
         width = Enum.at(widths, x)
 
-        [String.duplicate(b.top_edge, width), b.top_right_corner | acc]
+        duplicate(b.top_edge, width - 1) ++ [b.top_right_corner | acc]
       end)
 
     color_prefix =
@@ -97,7 +97,7 @@ defmodule Scribe.Formatter.Line do
         b = style.border_at(index.row, x, index.row_max, index.col_max)
         width = Enum.at(widths, x)
 
-        [String.duplicate(b.bottom_edge, width), b.bottom_right_corner | acc]
+        duplicate(b.bottom_edge, width - 1) ++ [b.bottom_right_corner | acc]
       end)
 
     [bottom_left, add_newline(line)]
@@ -112,6 +112,10 @@ defmodule Scribe.Formatter.Line do
   end
 
   defp padding(amount) do
-    Enum.map(0..amount, fn _x -> " " end)
+    duplicate(" ", amount)
+  end
+
+  defp duplicate(char, amount) do
+    Enum.map(0..amount, fn _x -> char end)
   end
 end

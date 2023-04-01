@@ -36,20 +36,24 @@ defmodule Scribe.Table do
       col_max: data |> Enum.at(0) |> Enum.count()
     }
 
-    Enum.reduce((index.row_max - 1)..0, [], fn x, acc ->
-      row = Enum.at(data, x)
-      i = %{index | row: x}
+    (index.row_max - 1)..0
+    |> Enum.reduce(
+      [],
+      fn x, acc ->
+        row = Enum.at(data, x)
+        i = %{index | row: x}
 
-      line = %Line{
-        data: row,
-        widths: widths,
-        style: style,
-        index: i,
-        opts: opts
-      }
+        line = %Line{
+          data: row,
+          widths: widths,
+          style: style,
+          index: i,
+          opts: opts
+        }
 
-      [Line.format(line) | acc]
-    end)
+        [Line.format(line) | acc]
+      end
+    )
     |> IO.iodata_to_binary()
   end
 
