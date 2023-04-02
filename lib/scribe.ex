@@ -14,6 +14,7 @@ defmodule Scribe do
   Options for configuring table output.
 
   - `:colorize` - When `false`, disables colored output. Defaults to `true`
+  - `:inspect` - When `false`, uses puts for display data, otherwise inspect`
   - `:data` - Defines table headers
   - `:device` - Where to print (defaults to STDOUT)
   - `:style` - Style callback module. Defaults to `Scribe.Style.Default`
@@ -21,6 +22,7 @@ defmodule Scribe do
   """
   @type format_opts :: [
           colorize: boolean,
+          inspect: boolean,
           data: [...],
           style: module,
           width: integer

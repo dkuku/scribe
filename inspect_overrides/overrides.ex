@@ -13,7 +13,7 @@ if Scribe.compile_auto_inspect?() do
       if do_inspect?(term) do
         do_inspect(term, opts)
       else
-        Scribe.format(term)
+        Scribe.format(term, inspect: true)
       end
     end
 
@@ -93,7 +93,7 @@ if Scribe.compile_auto_inspect?() do
 
     def inspect(map, name, opts) do
       if Scribe.auto_inspect?() do
-        Scribe.format([map])
+        Scribe.format([map], inspect: true, colorize: true)
       else
         map = :maps.to_list(map)
         open = color("%" <> name <> "{", :map, opts)

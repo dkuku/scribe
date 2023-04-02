@@ -28,11 +28,11 @@ defmodule Scribe.InspectOverridesTest do
     t = %{test: 1234, key: "testing"}
 
     expected = """
-    \e[39m+---------------+---------+
-    |\e[36m :key          \e[0m|\e[36m :test   \e[0m|
-    +---------------+---------+
-    |\e[32m \"testing\"     \e[0m|\e[33m 1234    \e[0m|
-    +---------------+---------+
+    \e[39m+-----------+-------+
+    |\e[36m :key      \e[0m|\e[36m :test \e[0m|
+    +-----------+-------+
+    |\e[32m \"testing\" \e[0m|\e[33m 1234  \e[0m|
+    +-----------+-------+
     """
 
     assert inspect(t) == expected
@@ -42,13 +42,13 @@ defmodule Scribe.InspectOverridesTest do
     t = %{test: 1234, key: "testing"}
 
     expected = """
-    \e[39m+---------------+---------+
-    |\e[36m :key          \e[0m|\e[36m :test   \e[0m|
-    +---------------+---------+
-    |\e[32m \"testing\"     \e[0m|\e[33m 1234    \e[0m|
-    |\e[32m \"testing\"     \e[0m|\e[33m 1234    \e[0m|
-    |\e[32m \"testing\"     \e[0m|\e[33m 1234    \e[0m|
-    +---------------+---------+
+    \e[39m+-----------+-------+
+    |\e[36m :key      \e[0m|\e[36m :test \e[0m|
+    +-----------+-------+
+    |\e[32m \"testing\" \e[0m|\e[33m 1234  \e[0m|
+    |\e[32m \"testing\" \e[0m|\e[33m 1234  \e[0m|
+    |\e[32m \"testing\" \e[0m|\e[33m 1234  \e[0m|
+    +-----------+-------+
     """
 
     assert inspect([t, t, t]) == expected
@@ -58,11 +58,11 @@ defmodule Scribe.InspectOverridesTest do
     t = %Scribe.InspectOverridesTest{}
 
     expected = """
-    \e[39m+-------------------------------+-------+----------+
-    |\e[36m :__struct__                   \e[0m|\e[36m :id   \e[0m|\e[36m :value   \e[0m|
-    +-------------------------------+-------+----------+
-    |\e[36m Scribe.InspectOverridesTest   \e[0m|\e[35m nil   \e[0m|\e[33m 1234     \e[0m|
-    +-------------------------------+-------+----------+
+    \e[39m+-----------------------------+-----+--------+
+    |\e[36m :__struct__                 \e[0m|\e[36m :id \e[0m|\e[36m :value \e[0m|
+    +-----------------------------+-----+--------+
+    |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|
+    +-----------------------------+-----+--------+
     """
 
     assert inspect(t) == expected
@@ -72,13 +72,13 @@ defmodule Scribe.InspectOverridesTest do
     t = %Scribe.InspectOverridesTest{}
 
     expected = """
-    \e[39m+-------------------------------+-------+----------+
-    |\e[36m :__struct__                   \e[0m|\e[36m :id   \e[0m|\e[36m :value   \e[0m|
-    +-------------------------------+-------+----------+
-    |\e[36m Scribe.InspectOverridesTest   \e[0m|\e[35m nil   \e[0m|\e[33m 1234     \e[0m|
-    |\e[36m Scribe.InspectOverridesTest   \e[0m|\e[35m nil   \e[0m|\e[33m 1234     \e[0m|
-    |\e[36m Scribe.InspectOverridesTest   \e[0m|\e[35m nil   \e[0m|\e[33m 1234     \e[0m|
-    +-------------------------------+-------+----------+
+    \e[39m+-----------------------------+-----+--------+
+    |\e[36m :__struct__                 \e[0m|\e[36m :id \e[0m|\e[36m :value \e[0m|
+    +-----------------------------+-----+--------+
+    |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|
+    |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|
+    |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|
+    +-----------------------------+-----+--------+
     """
 
     assert inspect([t, t, t]) == expected
@@ -111,11 +111,11 @@ defmodule Scribe.InspectOverridesTest do
     set_config(true)
 
     expected = """
-    \e[39m+---------------+---------+
-    |\e[36m :key          \e[0m|\e[36m :test   \e[0m|
-    +---------------+---------+
-    |\e[32m \"testing\"     \e[0m|\e[33m 1234    \e[0m|
-    +---------------+---------+
+    \e[39m+-----------+-------+
+    |\e[36m :key      \e[0m|\e[36m :test \e[0m|
+    +-----------+-------+
+    |\e[32m \"testing\" \e[0m|\e[33m 1234  \e[0m|
+    +-----------+-------+
     """
 
     assert inspect(t) == expected

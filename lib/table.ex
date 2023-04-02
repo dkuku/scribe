@@ -22,9 +22,14 @@ defmodule Scribe.Table do
   def format(data, rows, cols, opts \\ []) do
     total_width = printable_width(opts)
 
+    inspect_fn =
+      if opts[:inspect],
+        do: &Kernel.inspect/1,
+        else: &Scribe.Formatter.Line.stringify/1
+
     widths =
       data
-      |> get_max_widths(rows, cols)
+      |> get_max_widths(rows, cols, inspect_fn)
       |> distribute_widths(total_width)
 
     style = table_style(opts)
@@ -57,18 +62,18 @@ defmodule Scribe.Table do
     |> IO.iodata_to_binary()
   end
 
-  defp get_max_widths(data, rows, cols) do
+  defp get_max_widths(data, rows, cols, inspect_fn) do
     for c <- 0..(cols - 1) do
       data
       |> get_column_widths(rows, c)
-      |> Enum.max_by(&get_width(&1))
-      |> get_width()
+      |> Enum.max_by(&get_width(&1, inspect_fn))
+      |> get_width(inspect_fn)
     end
   end
 
-  defp get_width(value) do
+  defp get_width(value, inspect_fn) do
     value
-    |> inspect()
+    |> inspect_fn.()
     |> Line.cell_value(0, 5000)
     |> String.length()
   end

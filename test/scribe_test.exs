@@ -6,15 +6,30 @@ defmodule Scribe.ScribeTest do
   import ExUnit.CaptureIO
 
   describe "format/2" do
+    test "minimal example" do
+      t = %Scribe.ScribeTest{}
+
+      expected = """
+      +-------------------+-----+--------+
+      | :__struct__       | :id | :value |
+      +-------------------+-----+--------+
+      | Scribe.ScribeTest | nil | 1234   |
+      +-------------------+-----+--------+
+      """
+
+      actual = Scribe.format([t], colorize: false)
+      assert actual == expected
+    end
+
     test "includes __struct__ attributes" do
       t = %Scribe.ScribeTest{}
 
       expected = """
-      +---------------------+-------+----------+
-      | :__struct__         | :id   | :value   |
-      +---------------------+-------+----------+
-      | Scribe.ScribeTest   | nil   | 1234     |
-      +---------------------+-------+----------+
+      +-------------------+-----+--------+
+      | :__struct__       | :id | :value |
+      +-------------------+-----+--------+
+      | Scribe.ScribeTest | nil | 1234   |
+      +-------------------+-----+--------+
       """
 
       actual = Scribe.format([t], colorize: false)
@@ -25,11 +40,11 @@ defmodule Scribe.ScribeTest do
       t = %Scribe.ScribeTest{}
 
       expected = """
-      +---------------------+-------+----------+
-      | :__struct__         | :id   | :value   |
-      +---------------------+-------+----------+
-      | Scribe.ScribeTest   | nil   | 1234     |
-      +---------------------+-------+----------+
+      +-------------------+-----+--------+
+      | :__struct__       | :id | :value |
+      +-------------------+-----+--------+
+      | Scribe.ScribeTest | nil | 1234   |
+      +-------------------+-----+--------+
       """
 
       actual = Scribe.format(t, colorize: false)
@@ -40,13 +55,13 @@ defmodule Scribe.ScribeTest do
       t = %Scribe.ScribeTest{}
 
       expected = """
-      +---------------------+-------+----------+
-      | :__struct__         | :id   | :value   |
-      +---------------------+-------+----------+
-      | Scribe.ScribeTest   | nil   | 1234     |
-      | Scribe.ScribeTest   | nil   | 1234     |
-      | Scribe.ScribeTest   | nil   | 1234     |
-      +---------------------+-------+----------+
+      +-------------------+-----+--------+
+      | :__struct__       | :id | :value |
+      +-------------------+-----+--------+
+      | Scribe.ScribeTest | nil | 1234   |
+      | Scribe.ScribeTest | nil | 1234   |
+      | Scribe.ScribeTest | nil | 1234   |
+      +-------------------+-----+--------+
       """
 
       actual = Scribe.format([t, t, t], colorize: false)
@@ -57,11 +72,11 @@ defmodule Scribe.ScribeTest do
       t = %{test: 1234, key: "testing"}
 
       expected = """
-      +---------------+---------+
-      | :key          | :test   |
-      +---------------+---------+
-      | "testing"     | 1234    |
-      +---------------+---------+
+      +---------+-------+
+      | :key    | :test |
+      +---------+-------+
+      | testing | 1234  |
+      +---------+-------+
       """
 
       actual = Scribe.format([t], colorize: false)
@@ -72,11 +87,11 @@ defmodule Scribe.ScribeTest do
       t = [key: "testing", test: 1234]
 
       expected = """
-      +---------------+---------+
-      | :key          | :test   |
-      +---------------+---------+
-      | "testing"     | 1234    |
-      +---------------+---------+
+      +---------+-------+
+      | :key    | :test |
+      +---------+-------+
+      | testing | 1234  |
+      +---------+-------+
       """
 
       actual = Scribe.format([t], colorize: false)
@@ -87,11 +102,11 @@ defmodule Scribe.ScribeTest do
       t = %{test: 1234, key: "testing"}
 
       expected = """
-      +---------------+
-      | :key          |
-      +---------------+
-      | "testing"     |
-      +---------------+
+      +---------+
+      | :key    |
+      +---------+
+      | testing |
+      +---------+
       """
 
       actual = Scribe.format([t], data: [:key], colorize: false)
@@ -102,11 +117,11 @@ defmodule Scribe.ScribeTest do
       t = %{test: 1234, key: "testing"}
 
       expected = """
-      +---------------+
-      | :title        |
-      +---------------+
-      | "testing"     |
-      +---------------+
+      +---------+
+      | :title  |
+      +---------+
+      | testing |
+      +---------+
       """
 
       actual = Scribe.format([t], data: [title: :key], colorize: false)
@@ -117,11 +132,11 @@ defmodule Scribe.ScribeTest do
       t = %{test: 1234, key: "testing"}
 
       expected = """
-      +---------------+---------+
-      | :title        | :test   |
-      +---------------+---------+
-      | "testing"     | 1234    |
-      +---------------+---------+
+      +---------+-------+
+      | :title  | :test |
+      +---------+-------+
+      | testing | 1234  |
+      +---------+-------+
       """
 
       actual =
@@ -138,11 +153,11 @@ defmodule Scribe.ScribeTest do
       t = %{test: 1234, key: "testing"}
 
       expected = """
-      +---------------+
-      | "Caps"        |
-      +---------------+
-      | "TESTING"     |
-      +---------------+
+      +---------+
+      | Caps    |
+      +---------+
+      | TESTING |
+      +---------+
       """
 
       actual =
@@ -159,11 +174,11 @@ defmodule Scribe.ScribeTest do
       t = %{test: 1234, key: "testing"}
 
       expected = """
-      +-------------------------+-----------------+
-      | :title                  | :test           |
-      +-------------------------+-----------------+
-      | "testing"               | 1234            |
-      +-------------------------+-----------------+
+      +-----------------------+-------------------+
+      | :title                | :test             |
+      +-----------------------+-------------------+
+      | testing               | 1234              |
+      +-----------------------+-------------------+
       """
 
       actual =
@@ -183,11 +198,11 @@ defmodule Scribe.ScribeTest do
       fun = fn -> Scribe.print(%{test: 1234}) end
 
       exp = """
-      \e[39m+---------+
-      |\e[36m :test   \e[0m|
-      +---------+
-      |\e[33m 1234    \e[0m|
-      +---------+
+      \e[39m+-------+
+      |\e[36m :test \e[0m|
+      +-------+
+      |\e[33m 1234  \e[0m|
+      +-------+
 
       """
 
@@ -197,8 +212,7 @@ defmodule Scribe.ScribeTest do
     test "outputs proper IO with opts" do
       fun = fn -> Scribe.print(%{test: 1234}, colorize: false) end
 
-      exp =
-        "+---------+\n| :test   |\n+---------+\n| 1234    |\n+---------+\n\n"
+      exp = "+-------+\n| :test |\n+-------+\n| 1234  |\n+-------+\n\n"
 
       assert capture_io(fun) == exp
     end

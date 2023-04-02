@@ -7,13 +7,13 @@ defmodule Scribe.Style.Pseudo do
   iex>  opts = [colorize: false, style: Scribe.Style.Pseudo]
   iex>  Scribe.format([t, t, t], opts)
   "\""
-  ┌────────────────────┬───────┬──────────┐
-  │ :__struct__        │ :id   │ :value   │
-  ├────────────────────┼───────┼──────────┤
-  │ Scribe.StyleTest   │ nil   │ 1234     │
-  │ Scribe.StyleTest   │ nil   │ 1234     │
-  │ Scribe.StyleTest   │ nil   │ 1234     │
-  └────────────────────┴───────┴──────────┘
+  ┌──────────────────┬─────┬────────┐
+  │ :__struct__      │ :id │ :value │
+  ├──────────────────┼─────┼────────┤
+  │ Scribe.StyleTest │ nil │ 1234   │
+  │ Scribe.StyleTest │ nil │ 1234   │
+  │ Scribe.StyleTest │ nil │ 1234   │
+  └──────────────────┴─────┴────────┘
   "\""
   """
 

@@ -35,10 +35,13 @@ defmodule Scribe.Formatter.Line do
         width = Enum.at(widths, x)
         value = Enum.at(row, x)
 
+        inspect_fn =
+          if opts[:inspect], do: &Kernel.inspect/1, else: &stringify/1
+
         cell_value =
           case opts[:colorize] do
-            false -> value |> cell(width)
-            _ -> value |> cell(width) |> colorize(style.color(value))
+            false -> value |> inspect_fn.() |> cell(width)
+            _ -> value |> inspect_fn.() |> cell(width) |> colorize(value, style)
           end
 
         [cell_value, b.right_edge | acc]
@@ -48,12 +51,12 @@ defmodule Scribe.Formatter.Line do
   end
 
   def cell(x, width) do
-    len = min(String.length(inspect(x)) + 2, width)
-    [truncate([" ", inspect(x), padding(width - len)], width - 2), " "]
+    len = min(String.length(x) + 2, width)
+    [truncate([" ", x, padding(width - len)], width - 2), " "]
   end
 
   def cell_value(x, padding, max_width) when padding >= 0 do
-    truncate([" ", inspect(x), padding(padding)], max_width)
+    truncate([" ", x, padding(padding)], max_width)
   end
 
   defp truncate(elem, width) do
@@ -62,8 +65,8 @@ defmodule Scribe.Formatter.Line do
     |> String.slice(0..width)
   end
 
-  def colorize(string, color) do
-    [color, string, IO.ANSI.reset()]
+  def colorize(string, original_value, style) do
+    [style.color(original_value), string, style.color_reset()]
   end
 
   def top(%Line{widths: widths, style: style, index: index, opts: opts}) do
@@ -109,6 +112,21 @@ defmodule Scribe.Formatter.Line do
     else
       [line, "\n"]
     end
+  end
+
+  def stringify(nil), do: "nil"
+  def stringify(list) when is_list(list), do: inspect(list)
+  def stringify(tuple) when is_tuple(tuple), do: inspect(tuple)
+
+  def stringify(atom) when is_atom(atom) do
+    case Atom.to_string(atom) do
+      "Elixir." <> module_name -> module_name
+      _other -> inspect(atom)
+    end
+  end
+
+  def stringify(value) do
+    String.Chars.to_string(value)
   end
 
   defp padding(amount) do

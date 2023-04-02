@@ -7,11 +7,11 @@ defmodule Scribe.Style.Html do
   iex>  opts = [colorize: false, style: Scribe.Style.Html]
   iex>  Scribe.format([t, t, t], opts)
   "\""
-  <table>
-  <tr><th> :__struct__        </th><th> :id   </th><th> :value   </th></tr>
-  <tr><td> Scribe.StyleTest   </td><td> nil   </td><td> 1234     </td></tr>
-  <tr><td> Scribe.StyleTest   </td><td> nil   </td><td> 1234     </td></tr>
-  <tr><td> Scribe.StyleTest   </td><td> nil   </td><td> 1234     
+  <table border='1' style='border-collapse: collapse; margin: 25px 0; font-size: 0.9em; min-width: 400px;'>
+  <tr><th> :__struct__      </th><th> :id </th><th> :value </th></tr>
+  <tr><td> Scribe.StyleTest </td><td> nil </td><td> 1234   </td></tr>
+  <tr><td> Scribe.StyleTest </td><td> nil </td><td> 1234   </td></tr>
+  <tr><td> Scribe.StyleTest </td><td> nil </td><td> 1234   
   </td></tr></table>
   "\""
   """
@@ -26,7 +26,8 @@ defmodule Scribe.Style.Html do
 
   def border_at(0, _columns, _max_rows, _max_cols) do
     %Scribe.Border{
-      top_left_corner: "<table>\n<tr>",
+      top_left_corner:
+        "<table border='1' style='border-collapse: collapse; margin: 25px 0; font-size: 0.9em; min-width: 400px;'>\n<tr>",
       right_edge: "</th><th>",
       bottom_left_corner: "<tr>",
       left_edge: "<th>"
@@ -62,5 +63,6 @@ defmodule Scribe.Style.Html do
     }
   end
 
-  use Scribe.DefaultColors
+  def color(_), do: ""
+  def default_color, do: ""
 end
