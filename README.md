@@ -42,7 +42,7 @@ Useful for printing large collections, such as results of database queries
 
 iex(1)> User |> limit(5) |> Repo.all |> Scribe.print
 +-------------+----------------------------+------+
-| :__struct__ | :email                     | :id  |
+| STRUCT      | :email                     | :id  |
 +-------------+----------------------------+------+
 | User        | "myles_fisher@beahan.com"  | 5171 |
 | User        | "dawson_bartell@lynch.org" | 4528 |
@@ -83,7 +83,7 @@ Use with `Scribe.console/2`.
 iex(1)> User |> limit(5) |> Repo.all |> Scribe.console
 
 +-------------+------------------------+-------------+-------+------------+
-| :__struct__ | :email                 | :first_name | :id   | :last_name |
+| STRUCT      | :email                 | :first_name | :id   | :last_name |
 +-------------+------------------------+-------------+-------+------------+
 | User        | "celestine_satterfield | "Gene"      | 9061  | "Krajcik"  |
 | User        | "lynn1978@bednar.org"  | "Maeve"     | 9865  | "Gerlach"  |

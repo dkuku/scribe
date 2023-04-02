@@ -11,7 +11,7 @@ defmodule Scribe.ScribeTest do
 
       expected = """
       +-------------------+-----+--------+
-      | :__struct__       | :id | :value |
+      | STRUCT            | :id | :value |
       +-------------------+-----+--------+
       | Scribe.ScribeTest | nil | 1234   |
       +-------------------+-----+--------+
@@ -26,7 +26,7 @@ defmodule Scribe.ScribeTest do
 
       expected = """
       +-------------------+-----+--------+
-      | :__struct__       | :id | :value |
+      | STRUCT            | :id | :value |
       +-------------------+-----+--------+
       | Scribe.ScribeTest | nil | 1234   |
       +-------------------+-----+--------+
@@ -41,7 +41,7 @@ defmodule Scribe.ScribeTest do
 
       expected = """
       +-------------------+-----+--------+
-      | :__struct__       | :id | :value |
+      | STRUCT            | :id | :value |
       +-------------------+-----+--------+
       | Scribe.ScribeTest | nil | 1234   |
       +-------------------+-----+--------+
@@ -56,7 +56,7 @@ defmodule Scribe.ScribeTest do
 
       expected = """
       +-------------------+-----+--------+
-      | :__struct__       | :id | :value |
+      | STRUCT            | :id | :value |
       +-------------------+-----+--------+
       | Scribe.ScribeTest | nil | 1234   |
       | Scribe.ScribeTest | nil | 1234   |

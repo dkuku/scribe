@@ -8,7 +8,7 @@ defmodule Scribe.Style.Full do
   iex>  Scribe.format([t, t, t], opts)
   "\""
   ===================================
-  | :__struct__      | :id | :value |
+  | STRUCT           | :id | :value |
   ===================================
   | Scribe.StyleTest | nil | 1234   |
   +------------------+-----+--------+

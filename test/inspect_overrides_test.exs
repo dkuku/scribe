@@ -59,7 +59,7 @@ defmodule Scribe.InspectOverridesTest do
 
     expected = """
     \e[39m+-----------------------------+-----+--------+
-    |\e[36m :__struct__                 \e[0m|\e[36m :id \e[0m|\e[36m :value \e[0m|
+    |\e[36m STRUCT                      \e[0m|\e[36m :id \e[0m|\e[36m :value \e[0m|
     +-----------------------------+-----+--------+
     |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|
     +-----------------------------+-----+--------+
@@ -73,7 +73,7 @@ defmodule Scribe.InspectOverridesTest do
 
     expected = """
     \e[39m+-----------------------------+-----+--------+
-    |\e[36m :__struct__                 \e[0m|\e[36m :id \e[0m|\e[36m :value \e[0m|
+    |\e[36m STRUCT                      \e[0m|\e[36m :id \e[0m|\e[36m :value \e[0m|
     +-----------------------------+-----+--------+
     |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|
     |\e[36m Scribe.InspectOverridesTest \e[0m|\e[35m nil \e[0m|\e[33m 1234   \e[0m|

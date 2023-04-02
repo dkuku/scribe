@@ -8,7 +8,7 @@ defmodule Scribe.Style.Html do
   iex>  Scribe.format([t, t, t], opts)
   "\""
   <table border='1' style='border-collapse: collapse; margin: 25px 0; font-size: 0.9em; min-width: 400px;'>
-  <tr><th> :__struct__      </th><th> :id </th><th> :value </th></tr>
+  <tr><th> STRUCT           </th><th> :id </th><th> :value </th></tr>
   <tr><td> Scribe.StyleTest </td><td> nil </td><td> 1234   </td></tr>
   <tr><td> Scribe.StyleTest </td><td> nil </td><td> 1234   </td></tr>
   <tr><td> Scribe.StyleTest </td><td> nil </td><td> 1234   

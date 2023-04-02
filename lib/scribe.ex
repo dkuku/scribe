@@ -175,6 +175,7 @@ defmodule Scribe do
     for opt <- opts do
       case opt do
         {name, key} -> %{name: name, key: key}
+        :__struct__ -> %{name: STRUCT, key: :__struct__}
         key -> %{name: key, key: key}
       end
     end
