@@ -64,5 +64,6 @@ defmodule Scribe.Style.Html do
   end
 
   def color(_), do: ""
+  def color_reset(), do: ""
   def default_color, do: ""
 end
