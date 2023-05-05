@@ -26,35 +26,6 @@ defmodule Scribe do
           width: integer
         ]
 
-  @doc ~S"""
-  Enables/disables auto-inspect override.
-
-  If true, Scribe will override `inspect/2` for maps and structs, printing
-  them as tables.
-
-  ## Examples
-
-      iex> Scribe.auto_inspect(true)
-      :ok
-  """
-  @spec auto_inspect(boolean) :: :ok
-  def auto_inspect(inspect?) do
-    Application.put_env(:scribe, :auto_inspect, inspect?)
-  end
-
-  @doc ~S"""
-  Returns true if Scribe is overriding `Inspect`.
-
-  ## Examples
-
-      iex> Scribe.auto_inspect?
-      true
-  """
-  def auto_inspect? do
-    compile_auto_inspect?() and
-      Application.get_env(:scribe, :auto_inspect, false)
-  end
-
   @doc false
   def compile_auto_inspect? do
     Application.get_env(:scribe, :compile_auto_inspect, false)
@@ -65,15 +36,10 @@ defmodule Scribe do
 
   ## Examples
 
-      iex> print([])
+      iex> Scribe.print([])
       :ok
 
-      iex> Scribe.print(%{key: :value, test: 1234}, colorize: false)
-      +----------+---------+
-      | :key     | :test   |
-      +----------+---------+
-      | :value   | 1234    |
-      +----------+---------+
+      iex> Scribe.print([%{key: :value, test: 1234}], colorize: false)
       :ok
   """
   @spec print(data, format_opts) :: :ok
@@ -94,39 +60,15 @@ defmodule Scribe do
   end
 
   @doc ~S"""
-  Prints a table from given data and returns the data.
-
-  Useful for inspecting pipe chains.
-
-  ## Examples
-
-      iex> Scribe.inspect([])
-      []
-
-      iex> Scribe.inspect(%{key: :value, test: 1234}, colorize: false)
-      +----------+---------+
-      | :key     | :test   |
-      +----------+---------+
-      | :value   | 1234    |
-      +----------+---------+
-      %{test: 1234, key: :value}
-  """
-  @spec inspect(term, format_opts) :: term
-  def inspect(results, opts \\ []) do
-    print(results, opts)
-    results
-  end
-
-  @doc ~S"""
   Formats data into a printable table string.
 
   ## Examples
 
-      iex> format([])
+      iex> Scribe.format([])
       :ok
 
-      iex> format(%{test: 1234}, colorize: false)
-      "+---------+\n| :test   |\n+---------+\n| 1234    |\n+---------+\n"
+      iex> Scribe.format(%{test: 1234}, colorize: false)
+      "+-------+\n| :test |\n+-------+\n| 1234  |\n+-------+\n"
   """
   @spec format([] | [...] | term) :: String.t() | :ok
   def format(_results, opts \\ [])
@@ -134,13 +76,12 @@ defmodule Scribe do
 
   def format(results, opts) when is_map(results) do
     case Table.Reader.init(results) do
-      {:columns, _, _} -> results |> Table.to_rows()|> Enum.to_list() |> format(opts)
-      :none -> format(results, opts)
-    end
-  end
+      {:columns, _, _} ->
+        results |> Table.to_rows() |> Enum.to_list() |> format(opts)
 
-  def format(results, opts) when not is_list(results) do
-    format([results], opts)
+      :none ->
+        format([results], opts)
+    end
   end
 
   def format(results, opts) do

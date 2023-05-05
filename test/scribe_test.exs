@@ -5,6 +5,7 @@ defmodule Scribe.ScribeTest do
   defdelegate get_and_update(term, key, fun), to: Map
 
   use ExUnit.Case, async: false
+  doctest Scribe
 
   import ExUnit.CaptureIO
 
@@ -26,7 +27,7 @@ defmodule Scribe.ScribeTest do
     end
 
     test "minimal example transposed" do
-      data = %{id: [1,2,3], type: [:a, :b, :c]}
+      data = %{id: [1, 2, 3], type: [:a, :b, :c]}
 
       expected = """
       +-----+-------+
