@@ -1,5 +1,8 @@
 defmodule Scribe.ScribeTest do
   defstruct id: nil, value: 1234
+  defdelegate fetch(term, key), to: Map
+  defdelegate get(term, key, default), to: Map
+  defdelegate get_and_update(term, key, fun), to: Map
 
   use ExUnit.Case, async: false
 
@@ -14,10 +17,28 @@ defmodule Scribe.ScribeTest do
       | STRUCT            | :id | :value |
       +-------------------+-----+--------+
       | Scribe.ScribeTest | nil | 1234   |
+      | Scribe.ScribeTest | nil | 1234   |
       +-------------------+-----+--------+
       """
 
-      actual = Scribe.format([t], colorize: false)
+      actual = Scribe.format([t, t], colorize: false)
+      assert actual == expected
+    end
+
+    test "minimal example transposed" do
+      data = %{id: [1,2,3], type: [:a, :b, :c]}
+
+      expected = """
+      +-----+-------+
+      | :id | :type |
+      +-----+-------+
+      | 1   | :a    |
+      | 2   | :b    |
+      | 3   | :c    |
+      +-----+-------+
+      """
+
+      actual = Scribe.format(data, colorize: false)
       assert actual == expected
     end
 
@@ -33,21 +54,6 @@ defmodule Scribe.ScribeTest do
       """
 
       actual = Scribe.format([t], colorize: false)
-      assert actual == expected
-    end
-
-    test "accepts single element as data" do
-      t = %Scribe.ScribeTest{}
-
-      expected = """
-      +-------------------+-----+--------+
-      | STRUCT            | :id | :value |
-      +-------------------+-----+--------+
-      | Scribe.ScribeTest | nil | 1234   |
-      +-------------------+-----+--------+
-      """
-
-      actual = Scribe.format(t, colorize: false)
       assert actual == expected
     end
 
@@ -195,7 +201,7 @@ defmodule Scribe.ScribeTest do
 
   describe "print/2" do
     test "outputs proper IO" do
-      fun = fn -> Scribe.print(%{test: 1234}) end
+      fun = fn -> Scribe.print([%{test: 1234}]) end
 
       exp = """
       \e[39m+-------+
@@ -210,17 +216,11 @@ defmodule Scribe.ScribeTest do
     end
 
     test "outputs proper IO with opts" do
-      fun = fn -> Scribe.print(%{test: 1234}, colorize: false) end
+      fun = fn -> Scribe.print([%{test: 1234}], colorize: false) end
 
       exp = "+-------+\n| :test |\n+-------+\n| 1234  |\n+-------+\n\n"
 
       assert capture_io(fun) == exp
     end
-  end
-
-  test "Scribe.inspect/2 returns original data" do
-    val = %{test: 1234}
-    fun = fn -> assert Scribe.inspect(val) == val end
-    capture_io(fun)
   end
 end

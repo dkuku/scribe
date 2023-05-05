@@ -3,8 +3,6 @@ defmodule Scribe do
   Pretty-print tables of structs, maps and lists
   """
 
-  alias Scribe.Table
-
   @type data ::
           []
           | [...]
@@ -134,6 +132,13 @@ defmodule Scribe do
   def format(_results, opts \\ [])
   def format([], _opts), do: :ok
 
+  def format(results, opts) when is_map(results) do
+    case Table.Reader.init(results) do
+      {:columns, _, _} -> results |> Table.to_rows()|> Enum.to_list() |> format(opts)
+      :none -> format(results, opts)
+    end
+  end
+
   def format(results, opts) when not is_list(results) do
     format([results], opts)
   end
@@ -145,7 +150,7 @@ defmodule Scribe do
     data = Enum.map(results, &map_string_values(&1, keys))
 
     table = [headers | data]
-    Table.format(table, Enum.count(table), Enum.count(keys), opts)
+    Scribe.Table.format(table, Enum.count(table), Enum.count(keys), opts)
   end
 
   defp map_string_values(keys), do: Enum.map(keys, &string_value(&1))

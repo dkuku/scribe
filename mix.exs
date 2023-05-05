@@ -38,7 +38,7 @@ defmodule Scribe.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :pane]]
+    [applications: [:logger, :pane, :table]]
   end
 
   defp deps do
@@ -47,7 +47,8 @@ defmodule Scribe.Mixfile do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:faker, "~> 0.9", only: [:dev, :test]},
+      {:table, ">= 0.0.0"},
+      # {:faker, "~> 0.9", only: [:dev, :test]},
       {:pane, "~> 0.2"}
     ]
   end
